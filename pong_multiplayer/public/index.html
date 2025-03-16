@@ -1,0 +1,299 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Pong Game</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            border: 2px solid #333;
+            background-color: #000;
+        }
+        .paddle {
+            position: absolute;
+            width: 20px;
+            height: 100px;
+            background-color: #fff;
+        }
+        .ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fff;
+            transform: translate(-50%, -50%);
+        }
+        .score-display {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Auth Container -->
+    <div id="auth-container" class="container mx-auto py-10 px-4">
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="px-6 py-4">
+                <h1 class="text-3xl font-bold text-center mb-6">Multiplayer Pong</h1>
+                
+                <!-- Auth Tabs -->
+                <div class="flex border-b mb-4">
+                    <button id="login-tab" class="w-1/2 py-2 text-center font-medium text-blue-600 border-b-2 border-blue-600">Login</button>
+                    <button id="register-tab" class="w-1/2 py-2 text-center font-medium text-gray-500">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="login-username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="login-username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="login-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="space-y-4 hidden">
+                    <div>
+                        <label for="register-username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="register-username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <div>
+                        <label for="register-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="register-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <div>
+                        <label for="register-confirm-password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Register</button>
+                </form>
+
+                <div id="auth-error" class="mt-4 text-red-600 text-center hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Home Screen -->
+    <div id="home-container" class="container mx-auto py-10 px-4 hidden">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">Multiplayer Pong</h1>
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <span class="font-bold" id="user-name"></span>
+                        <span class="text-gray-600">(<span id="user-wins">0</span> wins)</span>
+                    </div>
+                    <button id="logout-btn" class="bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700">Logout</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Create Game -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-4">Create Game</h2>
+                    <form id="create-game-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Game Mode</label>
+                            <select id="game-mode" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <option value="1v1">1v1</option>
+                                <option value="2v2">2v2</option>
+                                <option value="2v1">2v1</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Number of Rounds</label>
+                            <select id="max-rounds" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <option value="3">3</option>
+                                <option value="5">5</option>
+                                <option value="7">7</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Create Room</button>
+                    </form>
+                </div>
+
+                <!-- Join Game -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-4">Join Game</h2>
+                    <form id="join-game-form" class="space-y-4">
+                        <div>
+                            <label for="room-code" class="block text-sm font-medium text-gray-700">Room Code</label>
+                            <input type="text" id="room-code" placeholder="Enter 6-digit code" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">Join Room</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Room -->
+    <div id="game-room-container" class="container mx-auto py-10 px-4 hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">Room: <span id="room-code-display"></span></h1>
+                <button id="leave-room-btn" class="bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700">Leave Room</button>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Game Info -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-4">Game Settings</h2>
+                    <div class="space-y-2">
+                        <p><span class="font-medium">Mode:</span> <span id="game-mode-display">1v1</span></p>
+                        <p><span class="font-medium">Rounds:</span> <span id="max-rounds-display">3</span></p>
+                        <p><span class="font-medium">Host:</span> <span id="host-display"></span></p>
+                    </div>
+
+                    <div id="host-controls" class="mt-6 space-y-4 hidden">
+                        <h3 class="text-lg font-medium">Host Controls</h3>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Game Mode</label>
+                            <select id="update-game-mode" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <option value="1v1">1v1</option>
+                                <option value="2v2">2v2</option>
+                                <option value="2v1">2v1</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Number of Rounds</label>
+                            <select id="update-max-rounds" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                                <option value="3">3</option>
+                                <option value="5">5</option>
+                                <option value="7">7</option>
+                            </select>
+                        </div>
+                        <button id="update-settings-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Update Settings</button>
+                        <button id="start-game-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">Start Game</button>
+                    </div>
+                </div>
+
+                <!-- Players -->
+                <div class="bg-white rounded-lg shadow-md p-6 md:col-span-2">
+                    <h2 class="text-xl font-bold mb-4">Players</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Team 1 -->
+                        <div class="border rounded-md p-4">
+                            <h3 class="text-lg font-medium mb-2">Team 1</h3>
+                            <ul id="team-0-players" class="space-y-2">
+                                <li class="text-gray-500">Waiting for players...</li>
+                            </ul>
+                        </div>
+
+                        <!-- Team 2 -->
+                        <div class="border rounded-md p-4">
+                            <h3 class="text-lg font-medium mb-2">Team 2</h3>
+                            <ul id="team-1-players" class="space-y-2">
+                                <li class="text-gray-500">Waiting for players...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Spectators -->
+                    <div class="mt-4 border-t pt-4">
+                        <h3 class="text-lg font-medium mb-2">Spectators</h3>
+                        <ul id="spectators-list" class="text-sm text-gray-500">
+                            <li>No spectators</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-container" class="container mx-auto py-10 px-4 hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">Game in Progress</h1>
+                <div>
+                    <span class="font-bold">Round: <span id="current-round">1</span>/<span id="total-rounds">3</span></span>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="game-container relative">
+                    <!-- Game UI elements -->
+                    <div class="absolute top-4 left-0 w-full text-center">
+                        <div class="flex justify-center">
+                            <div class="mx-8 score-display" id="team0-score">0</div>
+                            <div class="mx-8 score-display" id="team1-score">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Middle line -->
+                    <div class="absolute left-1/2 top-0 h-full w-0.5 bg-white bg-opacity-20" style="transform: translateX(-50%);"></div>
+
+                    <!-- Game messages -->
+                    <div id="game-message" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-75 p-4 rounded-lg text-white text-center text-2xl hidden">
+                        Game paused
+                    </div>
+
+                    <!-- Game elements (paddles, ball) will be created dynamically -->
+                </div>
+            </div>
+
+            <!-- Game Controls Info -->
+            <div class="mt-6 bg-white rounded-lg shadow-md p-4 text-center">
+                <h2 class="text-lg font-medium mb-2">Controls</h2>
+                <p>Use <strong>W</strong> and <strong>S</strong> keys to move your paddle up and down.</p>
+            </div>
+
+            <!-- Round Wins -->
+            <div class="mt-6 bg-white rounded-lg shadow-md p-4">
+                <h2 class="text-lg font-medium mb-2">Round Wins</h2>
+                <div class="flex justify-center">
+                    <div class="flex items-center mx-8">
+                        <span class="font-bold mr-2">Team 1:</span>
+                        <span id="team0-wins">0</span>
+                    </div>
+                    <div class="flex items-center mx-8">
+                        <span class="font-bold mr-2">Team 2:</span>
+                        <span id="team1-wins">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game End Screen -->
+    <div id="game-end-container" class="container mx-auto py-10 px-4 hidden">
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="px-6 py-4">
+                <h1 class="text-3xl font-bold text-center mb-6">Game Over</h1>
+                
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold mb-4">Team <span id="winning-team"></span> wins!</h2>
+                    <p class="text-xl mb-6">Final Score: <span id="final-score"></span></p>
+                    
+                    <div class="space-y-4">
+                        <button id="play-again-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">Play Again</button>
+                        <button id="return-home-btn" class="w-full bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700">Return to Home</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Socket.IO Client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    
+    <!-- Game Client -->
+    <script src="client.js"></script>
+</body>
+</html>
