@@ -1,0 +1,13 @@
+export { default } from './TimeLoop';
+export { default as TimeLoop } from './TimeLoop';
+export { Timeline } from './components/Timeline';
+export { ParadoxIndicator } from './components/ParadoxIndicator';
+export { LoopRecorder } from './components/LoopRecorder';
+export { CausalityChain } from './components/CausalityChain';
+export { useTimeTravel } from './hooks/useTimeTravel';
+export { useParadoxLogic } from './hooks/useParadoxLogic';
+export { scenarios } from './data/scenarios';
+export type { Scenario } from './data/scenarios';
+export type { TimeEvent, EventType } from './data/timeEvents';
+export type { PlayerAction, RecordedLoop, TimelineState, GameResources } from './utils/timeEngine';
+export type { Paradox, ParadoxType, CausalLink, ButterflyEffect } from './utils/paradoxResolver';

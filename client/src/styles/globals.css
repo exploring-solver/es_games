@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: rgb(255 255 255 / 0.1);
+  }
+
+  body {
+    @apply bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 text-white min-h-screen;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-effect-strong {
+    @apply bg-white/20 backdrop-blur-lg border border-white/30;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-400 to-primary-400 bg-clip-text text-transparent;
+  }
+
+  .science-card {
+    @apply glass-effect rounded-2xl p-6 shadow-2xl hover:shadow-accent-500/50 transition-all duration-300 hover:scale-105;
+  }
+
+  .neon-border {
+    @apply border-2 border-accent-400 shadow-lg shadow-accent-400/50;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105;
+  }
+
+  .btn-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-gray-900 font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105;
+  }
+
+  .input-field {
+    @apply glass-effect rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-accent-400 transition-all;
+  }
+}
+
+@layer utilities {
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  @keyframes gradient {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .glow-effect {
+    box-shadow: 0 0 20px rgba(77, 175, 255, 0.5);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #4dafff, #1a98ff);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #1a98ff, #0066b3);
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
