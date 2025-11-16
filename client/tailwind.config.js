@@ -1,0 +1,106 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Science-themed color palette
+        primary: {
+          50: '#e6f3ff',
+          100: '#b3dcff',
+          200: '#80c5ff',
+          300: '#4dafff',
+          400: '#1a98ff',
+          500: '#0082e6',
+          600: '#0066b3',
+          700: '#004d80',
+          800: '#00334d',
+          900: '#001a1a',
+        },
+        secondary: {
+          50: '#f0e6ff',
+          100: '#d1b3ff',
+          200: '#b380ff',
+          300: '#944dff',
+          400: '#751aff',
+          500: '#5c00e6',
+          600: '#4800b3',
+          700: '#350080',
+          800: '#22004d',
+          900: '#0f001a',
+        },
+        accent: {
+          50: '#e6fff9',
+          100: '#b3ffed',
+          200: '#80ffe0',
+          300: '#4dffd4',
+          400: '#1affc7',
+          500: '#00e6ae',
+          600: '#00b388',
+          700: '#008061',
+          800: '#004d3a',
+          900: '#001a14',
+        },
+        electric: {
+          50: '#fef3e6',
+          100: '#fddbb3',
+          200: '#fbc480',
+          300: '#faac4d',
+          400: '#f9951a',
+          500: '#e67b00',
+          600: '#b36100',
+          700: '#804700',
+          800: '#4d2c00',
+          900: '#1a1100',
+        },
+        neural: {
+          50: '#ffe6f3',
+          100: '#ffb3dc',
+          200: '#ff80c5',
+          300: '#ff4daf',
+          400: '#ff1a98',
+          500: '#e60082',
+          600: '#b30066',
+          700: '#80004d',
+          800: '#4d0033',
+          900: '#1a001a',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Orbitron', 'system-ui', 'sans-serif'],
+        mono: ['Fira Code', 'monospace'],
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'bounce-slow': 'bounce 2s infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'glow': 'glow 2s ease-in-out infinite',
+        'shimmer': 'shimmer 2.5s linear infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        glow: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-1000px 0' },
+          '100%': { backgroundPosition: '1000px 0' },
+        },
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'science-pattern': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234dafff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+      },
+    },
+  },
+  plugins: [],
+}
